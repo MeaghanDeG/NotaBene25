@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nota Bene - Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="main-container">
+    <section>
+      <h1>Welcome to Nota Bene</h1>
+      <p>A Place for Your Notes</p>
+    </section>
+    <form id="login-form">
+      <h2>Login</h2>
+      <label for="login-email-username">Email/Username:</label>
+      <input 
+        type="text" 
+        id="login-email-username" 
+        placeholder="Enter Email/Username" 
+        required 
+      />
+      <label for="login-password">Password:</label>
+      <input 
+        type="password" 
+        id="login-password" 
+        placeholder="Enter Password" 
+        required 
+      />
+      <button type="submit">Login</button>
+      <p id="error-message" class="error-message"></p> <!-- Error Message Placeholder -->
+    </form>
+  </div>
+  <script src="scripts.js"></script>
+</body>
+</html>

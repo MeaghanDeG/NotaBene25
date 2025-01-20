@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nota Bene</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- FullCalendar CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <div class="container mt-5 blurrable page-border">
+      <!-- Header Section -->
+      <div class="header">
+        <img src="NOTEpic.png" alt="Header Image">
+        <button class="btn btn-danger float-end" id="logout-btn">Logout</button>
+      </div>
+
+      <!-- Tabs Section -->
+      <div class="file-folder-tabs-container">
+        <p id="saveMessage"></p>
+        <div class="file-folder-tabs">
+          <div class="file-folder-tab" data-tab-id="groceryListForm">Grocery List</div>
+          <div class="file-folder-tab" data-tab-id="todoForm">To Do List</div>
+          <div class="file-folder-tab" data-tab-id="generalForm">General Notes</div>
+          <div class="file-folder-tab" data-tab-id="notesView" id="click-view-notes">View Notes</div>
+        </div>
+      </div>
+
+      <!-- Grocery List Form -->
+      <div id="groceryListForm" class="dropdown-container">
+        <h3>Create Grocery List</h3>
+        <form id="groceryForm">
+          <div class="mb-3">
+            <label for="groceryListTitle" class="form-label">Title</label>
+            <input type="text" class="form-control" id="groceryListTitle" placeholder="Enter list title" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Items</label>
+            <div id="groceryItems">
+              <div class="input-group mb-2">
+                <input type="text" class="form-control" placeholder="Add item" onkeydown="addNewItem(event, 'groceryItems')" />
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Save My Note</button>
+        </form>
+      </div>
+
+      <!-- To-Do List Form -->
+      <div id="todoForm" class="dropdown-container">
+        <h3>Create To-Do List</h3>
+        <form id="todoForm">
+          <div class="mb-3">
+            <label for="todoListTitle" class="form-label">Title</label>
+            <input type="text" class="form-control" id="todoListTitle" placeholder="Enter list title" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Tasks</label>
+            <div id="todoItems">
+              <div class="input-group mb-2">
+                <input type="text" class="form-control" placeholder="Add task" onkeydown="addNewItem(event, 'todoItems')" />
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Save My List</button>
+        </form>
+      </div>
+
+      <!-- General Notes Form -->
+      <div id="generalForm" class="dropdown-container">
+        <h3>Create General Note</h3>
+        <form id="generalNoteForm">
+          <div class="mb-3">
+            <label for="generalNoteTitle" class="form-label">Title</label>
+            <input type="text" class="form-control" id="generalNoteTitle" placeholder="Enter note title" />
+          </div>
+          <div class="mb-3">
+            <label for="generalNoteContent" class="form-label">Content</label>
+            <textarea class="form-control" id="generalNoteContent" rows="4" placeholder="Enter note content"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save My Note</button>
+        </form>
+      </div>
+
+      <!-- View Notes -->
+      <div id="notesView" class="dropdown-container">
+        <h3>Your Notes</h3>
+        <div id="notes-container" class="table-responsive"></div>
+      </div>
+    </div>
+    <!-- Edit Note Modal -->
+    <div class="modal fade" id="editNoteModal" tabindex="-1" aria-labelledby="editNoteModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editNoteModalLabel">Edit Note</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="edit-note-form">
+              <input type="hidden" id="editNoteId">
+              <div class="mb-3">
+                <label for="editNoteTitle" class="form-label">Title</label>
+                <input type="text" class="form-control" id="editNoteTitle" required>
+              </div>
+              <div class="mb-3">
+                <label for="editNoteContent" class="form-label">Content</label>
+                <textarea class="form-control" id="editNoteContent" rows="4" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="scripts.js"></script>
+  </body>
+</html>
