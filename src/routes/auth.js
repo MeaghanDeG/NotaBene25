@@ -24,20 +24,15 @@ const transporter = nodemailer.createTransport({
 // POST: Sign Up Route
 // ===============================
 router.post("/signup", async (req, res) => {
-  const { username, email, password, confirmPassword } = req.body;
+  const { username, email, password } = req.body;
 
   try {
     console.log("Signup request body:", req.body); // Log the request body
 
     // Validate input
-    if (!username || !email || !password || !confirmPassword) {
+    if (!username || !email || !password) {
       console.error("Missing required fields"); // Log the error
       return res.status(400).json({ message: "All fields are required" });
-    }
-
-    if (password !== confirmPassword) {
-      console.error("Passwords do not match"); // Log the error
-      return res.status(400).json({ message: "Passwords do not match" });
     }
 
     // Check if the user already exists
@@ -61,8 +56,8 @@ router.post("/signup", async (req, res) => {
     console.log("New user created:", newUser); // Log the created user
 
     // Send verification email (optional)
-    const emailToken = jwt.sign({ id: newUser._id }, EMAIL_SECRET, { expiresIn: "1d" });
-    const verificationUrl = `${BASE_URL}/auth/verify-email/${emailToken}`;
+    const emailToken = jwt.sign({ id: newUser._id }, process.env.EMAIL_SECRET, { expiresIn: "1d" });
+    const verificationUrl = `${process.env.BASE_URL}/auth/verify-email/${emailToken}`;
     console.log("Verification URL:", verificationUrl); // Log the verification URL
 
     await transporter.sendMail({
@@ -78,7 +73,6 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-    
 // ===============================
 // GET: Email Verification
 // ===============================
@@ -96,53 +90,38 @@ router.get("/verify-email/:token", async (req, res) => {
   }
 });
 
-// ===============================
+/// ===============================
 // POST: Login Route
 // ===============================
 router.post("/login", async (req, res) => {
-  const { emailOrUsername, password } = req.body;
+  const { email, password } = req.body; // Use 'email' instead of 'emailOrUsername'
 
   try {
-    console.log("Received login request:", req.body); // Log incoming request
-
-    // Step 1: Validate input
-    if (!emailOrUsername || !password) {
-      console.error("Missing emailOrUsername or password");
-      return res.status(400).json({ message: "All fields are required" });
+    if (!email || !password) {
+      return res.status(400).json({ message: "Missing email or password" });
     }
 
-    // Step 2: Find the user by email or username
-    const user = await User.findOne({
-      $or: [{ email: emailOrUsername }, { username: emailOrUsername }],
-    });
-    console.log("User found:", user); // Log the user object or null
-
+    // Check if the user exists
+    const user = await User.findOne({ email });
     if (!user) {
-      console.error("User not found");
-      return res.status(400).json({ message: "Invalid email/username or password" });
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    // Step 3: Check if the account is verified
+    // Check if the account is verified
     if (!user.isVerified) {
-      console.error("User account not verified");
       return res.status(400).json({ message: "Please verify your email to log in." });
     }
 
-    // Step 4: Compare the provided password with the hashed password in the database
+    // Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log("Password match:", isMatch); // Log whether the password matches
-
     if (!isMatch) {
-      console.error("Incorrect password");
-      return res.status(400).json({ message: "Invalid email/username or password" });
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    // Step 5: Generate a JWT
+    // Generate JWT
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-    console.log("Generated JWT token:", token); // Log the token
 
-    // Step 6: Send a success response
-    res.json({
+    res.status(200).json({
       message: "Login successful",
       token,
     });
@@ -151,6 +130,5 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
-
 
 module.exports = router;

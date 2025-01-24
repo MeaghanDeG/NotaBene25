@@ -75,6 +75,26 @@ router.get("/", authenticateToken, async (req, res) => {
     res.status(500).json({ message: "Failed to fetch notes" });
   }
 });
+// Fetch Notes for a Specific Date
+router.get("/calendar/:date", authenticateToken, async (req, res) => {
+  try {
+    const date = new Date(req.params.date);
+
+    // Fetch notes with the provided calendarDate
+    const notes = await Note.find({
+      user: req.user.id,
+      calendarDate: {
+        $gte: new Date(date.setHours(0, 0, 0, 0)), // Start of the day
+        $lt: new Date(date.setHours(23, 59, 59, 999)), // End of the day
+      },
+    });
+
+    res.status(200).json(notes);
+  } catch (error) {
+    console.error("Error fetching notes for the calendar:", error.message);
+    res.status(500).json({ message: "Failed to fetch calendar notes." });
+  }
+});
 
 // ===============================
 // GET: Fetch a Single Note by ID (Ownership Check)

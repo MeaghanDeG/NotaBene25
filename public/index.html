@@ -40,6 +40,7 @@
         </div>
       </div>
 
+      
       <!-- Grocery List Form -->
       <div id="groceryListForm" class="dropdown-container">
         <h3>Create Grocery List</h3>
@@ -63,7 +64,7 @@
       <!-- To-Do List Form -->
       <div id="todoForm" class="dropdown-container">
         <h3>Create To-Do List</h3>
-        <form id="todoForm">
+        <form id="todoNoteForm">
           <div class="mb-3">
             <label for="todoListTitle" class="form-label">Title</label>
             <input type="text" class="form-control" id="todoListTitle" placeholder="Enter list title" />
@@ -102,6 +103,12 @@
         <div id="notes-container" class="table-responsive"></div>
       </div>
     </div>
+    <!-- Calendar View -->
+      <div id="calendar-section" class="dropdown-container">
+        <h3>Your Calendar</h3>
+        <div id="calendar"></div>
+      </div>
+
     <!-- Edit Note Modal -->
     <div class="modal fade" id="editNoteModal" tabindex="-1" aria-labelledby="editNoteModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -130,5 +137,7 @@
 
     <!-- Scripts -->
     <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script src="js/calendar.js"></script>      
   </body>
 </html>

@@ -38,7 +38,7 @@ document.getElementById("signup-form").addEventListener("submit", async (event) 
     const response = await fetch(`${API_BASE_URL}/auth/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, email, password }),
+      body: JSON.stringify({ username, email, password, }),
     });
 
     const data = await response.json();
